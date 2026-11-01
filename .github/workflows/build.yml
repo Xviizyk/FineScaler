@@ -17,9 +17,11 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            name: linux
+            name: lin
+            exe: FineScaler.Desktop
           - os: windows-latest
-            name: windows
+            name: win
+            exe: FineScaler.Desktop.exe
 
     steps:
     - name: Checkout repository
@@ -38,7 +40,7 @@ jobs:
         BUILD=$(dotnet msbuild Directory.Build.props -getProperty:BuildNumber)
         echo "version=$VERSION" >> $GITHUB_OUTPUT
         echo "build=$BUILD" >> $GITHUB_OUTPUT
-        echo "Собираем v$VERSION b$BUILD на ${{ matrix.name }}"
+        echo "Building v$VERSION b$BUILD os${{ matrix.name }}"
 
     - name: Restore dependencies
       run: dotnet restore FineScaler.slnx
@@ -51,7 +53,7 @@ jobs:
       with:
         name: FineScaler-v${{ steps.meta.outputs.version }}-b${{ steps.meta.outputs.build }}-${{ matrix.name }}
         path: |
-          **/bin/Release/**
+          **/${{ matrix.exe }}
         retention-days: 7
 
   finalize:
