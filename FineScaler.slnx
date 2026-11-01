@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/FineScaler.Desktop/FineScaler.Desktop.csproj" />
+    <Project Path="src/FineScaler.Tests/FineScaler.Tests.csproj" />
+    <Project Path="src/FineScaler/FineScaler.csproj" />
+  </Folder>
+</Solution>
