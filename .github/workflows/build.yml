@@ -1,0 +1,79 @@
+name: build
+permissions:
+  contents: write
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: FineScaler-Build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            name: linux
+          - os: windows-latest
+            name: windows
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
+
+    - name: Read version and build number
+      id: meta
+      shell: bash
+      run: |
+        VERSION=$(dotnet msbuild Directory.Build.props -getProperty:Version)
+        BUILD=$(dotnet msbuild Directory.Build.props -getProperty:BuildNumber)
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "build=$BUILD" >> $GITHUB_OUTPUT
+        echo "Собираем v$VERSION b$BUILD на ${{ matrix.name }}"
+
+    - name: Restore dependencies
+      run: dotnet restore FineScaler.slnx
+
+    - name: Build
+      run: dotnet build FineScaler.slnx --no-restore --configuration Release
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: FineScaler-v${{ steps.meta.outputs.version }}-b${{ steps.meta.outputs.build }}-${{ matrix.name }}
+        path: |
+          **/bin/Release/**
+        retention-days: 7
+
+  finalize:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '10.0.x'
+
+    - name: Bump build number
+      shell: bash
+      run: |
+        BUILD=$(dotnet msbuild Directory.Build.props -getProperty:BuildNumber)
+        NEXT=$((BUILD + 1))
+        sed -i "s|<BuildNumber>.*</BuildNumber>|<BuildNumber>$NEXT</BuildNumber>|" Directory.Build.props
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git add Directory.Build.props
+        git commit -m "chore: bump build number to $NEXT"
+        git push
