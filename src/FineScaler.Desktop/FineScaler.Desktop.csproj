@@ -1,11 +1,9 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>FineScaler.Desktop</RootNamespace>
     <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,5 +11,6 @@
     <PackageReference Include="Avalonia.Desktop" Version="11.3.*" />
     <PackageReference Include="Avalonia.Themes.Fluent" Version="11.3.*" />
     <ProjectReference Include="..\FineScaler.Core\FineScaler.Core.csproj" />
+    <ProjectReference Include="..\FineScaler.Assets\FineScaler.Assets.csproj" />
   </ItemGroup>
 </Project>

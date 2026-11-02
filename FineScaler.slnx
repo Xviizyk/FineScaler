@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/FineScaler.Assets/FineScaler.Assets.csproj" />
     <Project Path="src/FineScaler.Core/FineScaler.Core.csproj" />
     <Project Path="src/FineScaler.Desktop/FineScaler.Desktop.csproj" />
     <Project Path="src/FineScaler.Tests/FineScaler.Tests.csproj" />

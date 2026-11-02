@@ -2,9 +2,11 @@
   <PropertyGroup>
     <Version>0.0.1</Version>
     <BuildNumber>1</BuildNumber>
+    <InformationalVersion>$(Version)-b$(BuildNumber)</InformationalVersion>
     <BaseOutputPath>$(MSBuildThisFileDirectory)bin\</BaseOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <AppendConfigurationToOutputPath>false</AppendConfigurationToOutputPath>
+    <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
   </PropertyGroup>
 </Project>

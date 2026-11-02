@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using Avalonia.Layout;
+using Avalonia.Media;
 
 namespace FineScaler.Desktop.Screen;
 
@@ -7,15 +8,18 @@ public class MainScreen : Window
 {
     public MainScreen()
     {
-        Title = "FineScaler";
-        Width = 800;
-        Height = 600;
+        Title = ScreenProperties.DefaultTitle;
+        Width = ScreenProperties.DefaultWidth;
+        Height = ScreenProperties.DefaultHeight;
+        CanResize = true;
+        CanMaximize = true;
+        Icon = ScreenProperties.DefaultIcon;
 
-        Content = new TextBlock
+        Panel mainPanel = new()
         {
-            Text = "Tetodayo!",
-            HorizontalAlignment = HorizontalAlignment.Center,
-            VerticalAlignment = VerticalAlignment.Center
+            Background = new SolidColorBrush(ScreenProperties.DefaultDarkBackground),
         };
+        
+        Content = mainPanel;
     }
 }
